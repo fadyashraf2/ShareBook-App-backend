@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+
+
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script src="../node_modules/socket.io-client/dist/socket.io.js"></script>
+
+
+</head>
+
+<body>
+
+
+    <div id="div1" class="container">
+
+
+    </div>
+    <form id="form" action="http://localhost:3000/books/addComment" method="POST">
+        <input type="text" name="bookId" value="5d2de28ba5f31e2498c678cf"> <br>
+        <input type="text" name="userId" value="5d31a6a56f84b107dc526551"> <br>
+        <input type="text" name="comment"> <br>
+        <input type="number" name="avgRating"> <br>
+        <input  id='sub' type="submit">
+    </form>
+
+    <button id="ins">insert new product</button>
+
+
+    <script>
+
+
+        var socket = io.connect('http://localhost:3000');
+
+        $(function () {
+
+            //we bind to the form instead of the form button
+            //using .on() (jQ1.7+)
+            $('#form').on('submit', function (e) {
+
+                //prevent form submission
+                e.preventDefault();
+                socket.emit("newComment",'5d2ce90493862f29645926c1' );
+                //do stuff
+                socket.on('newComment',(newComment)=>{
+                    console.log(newComment);
+                })
+                
+                this.submit();
+            });
+        });
+
+        $('#ins').click(function () {
+            console.log("testtt");
+
+             socket.emit("oldComments", ('5d2ce90493862f29645926c1'));
+
+
+        });
+        socket.on("oldComments", (oldComments) => {
+            // var jsonData = JSON.parse(oldComments)
+            console.log(oldComments)
+        });
+        $.get("http://localhost:3000/book/5d2ce90493862f29645926c1", function (data, status) {
+            // var jsonData = JSON.parse(data);
+            console.log(data);
+
+
+
+        });
+
+
+
+
+    </script>
+</body>
+
+</html>
